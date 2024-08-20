@@ -9,7 +9,9 @@
     "preview": "vite preview",
     "lint:eslint": "eslint \"src/**/*.{vue,ts,js}\" --fix",
     "lint:prettier": "prettier --write \"**/*.{js,ts,json,css,less,scss,vue,html,md}\"",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "lint:lint-staged": "lint-staged",
+    "commit": "git-cz"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
@@ -43,5 +45,34 @@
     "vite": "^5.3.1",
     "vite-plugin-mock": "^3.0.2",
     "vue-tsc": "^2.0.21"
+  },
+   "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "{!(package)*.json,*.code-snippets,.!(browserslist)*rc}": [
+      "prettier --write--parser json"
+    ],
+    "package.json": [
+      "prettier --write"
+    ],
+    "*.vue": [
+      "eslint --fix",
+      "prettier --write",
+      "stylelint --fix"
+    ],
+    "*.{scss,less,styl,html}": [
+      "stylelint --fix",
+      "prettier --write"
+    ],
+    "*.md": [
+      "prettier --write"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-git"
+    }
   }
 }
