@@ -2,11 +2,7 @@
 module.exports = {
   rules: {
     // @see: https://commitlint.js.org/#/reference-rules
-    "type-enum": [
-      RuleConfigSeverity.Error,
-      "always",
-      ["build", "chore", "ci", "docs", "feat", "fix", "perf", "refactor", "revert", "style", "test"],
-    ],
+    "header-max-length": [0, "always", 72],
   },
   prompt: {
     messages: {
