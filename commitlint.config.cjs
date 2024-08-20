@@ -1,5 +1,13 @@
 // commitlint.config.cjs
 module.exports = {
+  rules: {
+    // @see: https://commitlint.js.org/#/reference-rules
+    "type-enum": [
+      RuleConfigSeverity.Error,
+      "always",
+      ["build", "chore", "ci", "docs", "feat", "fix", "perf", "refactor", "revert", "style", "test"],
+    ],
+  },
   prompt: {
     messages: {
       type: "选择你要提交的类型 :",

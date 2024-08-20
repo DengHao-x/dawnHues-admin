@@ -9,5 +9,3 @@ const currentLocale = ref(zhCn);
     <router-view />
   </el-config-provider>
 </template>
-
-<style scoped></style>

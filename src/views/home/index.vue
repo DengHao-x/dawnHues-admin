@@ -222,8 +222,8 @@ export default {
 </script>
 <style scoped>
 .company {
+  width: 600px;
   padding: 30px;
   text-align: left;
-  width: 600px;
 }
 </style>

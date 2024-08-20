@@ -60,5 +60,3 @@ const onSubmit = async (ruleFormRef: FormInstance | undefined) => {
   console.log(data);
 };
 </script>
-
-<style scoped lang="scss"></style>
