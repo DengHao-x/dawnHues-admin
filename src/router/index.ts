@@ -31,7 +31,7 @@ router.beforeEach((to, from, next) => {
       });
       console.log(asyncRouter);
     });
-    next();
+    next("/home");
   } else {
     if (to.path !== "/login") {
       if (whiteList.indexOf(to.path) !== -1) {

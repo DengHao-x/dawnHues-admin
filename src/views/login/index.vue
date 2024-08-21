@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { login } from "@/api/user";
+import { login } from "@/api/user/user";
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import type { FormInstance, FormRules } from "element-plus";
@@ -60,3 +60,4 @@ const onSubmit = async (ruleFormRef: FormInstance | undefined) => {
   console.log(data);
 };
 </script>
+@/api/user/user
