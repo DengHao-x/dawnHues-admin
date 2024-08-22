@@ -16,7 +16,7 @@ export default defineConfig(({ command }) => {
     plugins: [
       vue(),
       viteMockServe({
-        mockPath: "./src/mock",
+        mockPath: "./mock",
         enable: command === "serve",
       }),
     ],
