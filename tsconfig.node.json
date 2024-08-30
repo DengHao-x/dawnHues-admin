@@ -13,6 +13,6 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["vite.config.ts", "types/*.d.ts", "src/**/*.ts", "src/**/*.vue", "src/utils/**/*"],
+  "include": ["vite.config.ts", "types/*.d.ts", "src/**/*.ts", "src/**/*.vue", "src/**/*","src/utils/**/*","src/store/**/*"],
   "exclude": ["dist", "node_modules"]
 }

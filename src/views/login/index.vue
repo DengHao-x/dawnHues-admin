@@ -28,7 +28,7 @@ import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import type { FormInstance, FormRules } from "element-plus";
 import { ElMessage } from "element-plus";
-import { setToken } from "@/utils/authentication";
+import { useUserStore } from "@/store/modules/userStore";
 interface RuleForm {
   username: string;
   password: string;
@@ -46,18 +46,20 @@ const rules = reactive<FormRules<RuleForm>>({
 const onSubmit = async (ruleFormRef: FormInstance | undefined) => {
   if (!ruleFormRef) return;
   const { username, password } = ruleForm;
-  const { data }: any = await login({
-    username,
-    password,
-  });
-  if (data.code === 200) {
-    setToken(data.data.accessToken);
-    router.push("/home");
-    ElMessage.success("登陆成功");
-  } else {
-    ElMessage.error(data.data.message);
-  }
-  console.log(data);
+  // 登陆
+  useUserStore()
+    .loginUser({
+      username,
+      password,
+    })
+    .then((data: any) => {
+      if (data.code === 200) {
+        router.push("/home");
+        ElMessage.success("登陆成功");
+      } else {
+        ElMessage.error(data.data.message);
+      }
+    });
 };
 </script>
 @/api/user/user
