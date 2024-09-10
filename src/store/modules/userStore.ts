@@ -34,7 +34,7 @@ export const useUserStore = defineStore({
         login(data)
           .then((res: any) => {
             if (res.data.success) {
-              setToken(res.accessToken);
+              setToken(res.data.data.accessToken);
             }
             resolve(res.data);
           })

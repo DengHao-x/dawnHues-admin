@@ -32,9 +32,7 @@ export default [
       // 有就返回成功信息
       return {
         code: 200,
-        data: {
-          systemManagementRouter,
-        },
+        data: [{ ...systemManagementRouter }],
       };
     },
   },

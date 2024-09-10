@@ -16,6 +16,7 @@ declare global {
     isKeepAlive?: boolean;
     rank?: number;
   }
+
   interface RouteChildren {
     //路由地址
     path: string;
@@ -28,7 +29,10 @@ declare global {
     // 路由元信息 可选
     meta: RouteMeta;
   }
-  interface RouteConfigsTable {
+  /**
+   * @description 整体路由类型（包括完整子路由）
+   */
+  interface RouteAllConfigs {
     //路由地址
     path: string;
     // 路由名称 (和当前组件的`name`保持一致,不要重复）

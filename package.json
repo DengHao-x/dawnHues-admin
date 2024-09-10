@@ -21,6 +21,7 @@
     "cz-cli": "^1.0.0",
     "element-plus": "^2.7.6",
     "js-cookie": "^3.0.5",
+    "lodash": "^4.17.21",
     "nprogress": "^0.2.0",
     "pinia": "^2.1.7",
     "prettier": "^3.3.3",
@@ -32,6 +33,7 @@
   "devDependencies": {
     "@eslint/js": "^9.8.0",
     "@types/js-cookie": "^3.0.6",
+    "@types/lodash": "^4.17.7",
     "@types/node": "^20.14.10",
     "@vitejs/plugin-vue": "^5.0.5",
     "commitizen": "^4.3.0",

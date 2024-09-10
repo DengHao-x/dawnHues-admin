@@ -2,7 +2,7 @@ import { type Router, createRouter, type RouteRecordRaw, type RouteComponent, cr
 import NProgress from "@/utils/nprogress";
 import baseRoutes from "./modules/baseRouter";
 import { getToken } from "@/utils/authentication";
-
+import { initRouter } from "@/router/utils";
 /** 路由白名单 */
 const whiteList = ["/login"];
 
@@ -16,7 +16,9 @@ export const router: Router = createRouter({
 
 router.beforeEach((to, from, next) => {
   NProgress.start();
+  console.log(to, from, getToken(), "getToken()");
   if (getToken()) {
+    initRouter().then(() => {});
     next();
   } else {
     if (to.path !== "/login") {

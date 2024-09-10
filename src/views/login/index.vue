@@ -23,12 +23,12 @@
 </template>
 
 <script setup lang="ts">
-import { login } from "@/api/user/user";
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import type { FormInstance, FormRules } from "element-plus";
 import { ElMessage } from "element-plus";
 import { useUserStore } from "@/store/modules/userStore";
+import { initRouter } from "@/router/utils";
 interface RuleForm {
   username: string;
   password: string;
@@ -53,9 +53,11 @@ const onSubmit = async (ruleFormRef: FormInstance | undefined) => {
       password,
     })
     .then((data: any) => {
-      if (data.code === 200) {
-        router.push("/home");
-        ElMessage.success("登陆成功");
+      if (data.success) {
+        initRouter().then(() => {
+          router.push("/home");
+          ElMessage.success("登陆成功");
+        });
       } else {
         ElMessage.error(data.data.message);
       }
