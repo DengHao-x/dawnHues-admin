@@ -1,6 +1,9 @@
 // 全局路由类型声明
 import type { RouteComponent, RouteLocationNormalized } from "vue-router";
 declare global {
+  /**
+   * @description 路由元信息
+   */
   interface RouteMeta {
     // 菜单名称
     title: string;
@@ -14,9 +17,14 @@ declare global {
     isHide?: boolean;
     //路由组件缓存
     isKeepAlive?: boolean;
+    // 菜单路由排序
     rank?: number;
+    //页面权限
+    roles?: Array<string>;
   }
-
+  /**
+   * @description 子路由类型
+   */
   interface RouteChildren {
     //路由地址
     path: string;
@@ -28,6 +36,8 @@ declare global {
     component?: RouteComponent;
     // 路由元信息 可选
     meta: RouteMeta;
+    // 子路由 可选
+    children?: Array<RouteChildren>;
   }
   /**
    * @description 整体路由类型（包括完整子路由）
