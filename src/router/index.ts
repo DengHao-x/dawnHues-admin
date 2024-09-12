@@ -19,7 +19,11 @@ router.beforeEach((to, from, next) => {
   console.log(to, from, getToken(), "getToken()");
   if (getToken()) {
     initRouter().then(() => {});
-    next();
+    if (to.path === "/") {
+      next("/home");
+    } else {
+      next();
+    }
   } else {
     if (to.path !== "/login") {
       if (whiteList.indexOf(to.path) !== -1) {

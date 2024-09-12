@@ -15,11 +15,11 @@ export const initRouter = async () => {
 
 //处理后端传过来的动态路由
 const handleAsyncRouter = (ayncRouterList: Array<RouteAllConfigs>) => {
-  const aa = filterAsyncRouter(ayncRouterList);
-  console.log(aa, "ayncRouterList");
-  router.options.routes.push(ayncRouterList[0]);
-  router.addRoute(ayncRouterList);
-  console.log(router, "router");
+  const filterRouerList = filterAsyncRouter(ayncRouterList);
+  console.log(filterRouerList, "ayncRouterList");
+
+  //   router.options.routes[0].push(ayncRouterList[0]);
+  //   router.addRoute(filterRouerList);
 };
 
 /**
@@ -34,10 +34,14 @@ const filterAsyncRouter = (ayncRouterList: Array<RouteRecordRaw>) => {
 
   const modulesRoutes = import.meta.glob("/src/views/**/*.{vue,tsx}");
   const modulesRoutesKeys = Object.keys(modulesRoutes);
-  console.log(modulesRoutes, modulesRoutesKeys, "modulesRoutesKeys");
   ayncRouterList.forEach((item: RouteRecordRaw) => {
     console.log(item, "item");
-    const index = modulesRoutesKeys.findIndex((ev) => ev.includes(item.path));
+    if (item?.children && !item.redirect) {
+      item.redirect = item.children[0].path;
+    }
+    const index = item?.component
+      ? modulesRoutesKeys.findIndex((ev) => ev.includes(item.component as any))
+      : modulesRoutesKeys.findIndex((ev) => ev.includes(item.path));
     item.component = modulesRoutes[modulesRoutesKeys[index]];
     if (item?.children && item.children.length) {
       filterAsyncRouter(item.children);
