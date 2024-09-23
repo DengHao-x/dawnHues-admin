@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { userType } from "./types";
 import { login } from "@/api/user/user";
-import { setToken, setUserInfo } from "@/utils/authentication";
+import { setToken, setUserInfo, removeToken } from "@/utils/authentication";
 export const useUserStore = defineStore({
   id: "dawnuserStore",
   state: (): userType => ({
@@ -34,7 +34,8 @@ export const useUserStore = defineStore({
         login(data)
           .then((res: any) => {
             if (res.data.success) {
-              setToken(res.data.data.accessToken);
+              const { accessToken, expires } = res.data.data;
+              setToken(accessToken, expires);
             }
             resolve(res.data);
           })
@@ -42,6 +43,9 @@ export const useUserStore = defineStore({
             reject(err);
           });
       });
+    },
+    async loginOut() {
+      removeToken();
     },
   },
 });

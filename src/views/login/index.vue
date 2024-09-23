@@ -1,5 +1,11 @@
 <template>
-  <div class="login">
+  <div class="login flex flex-col justify-center items-center">
+    <div class="flex">
+      <img src="@/assets/images/loginBg.png" alt="" />
+    </div>
+    <el-switch inline-prompt v-model="isDark" @click="toggle" :active-icon="Moon" :inactive-icon="Sunny">
+      切换</el-switch
+    >
     <el-form
       ref="ruleFormRef"
       style="max-width: 600px"
@@ -26,13 +32,17 @@
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import type { FormInstance, FormRules } from "element-plus";
+import { Moon, Sunny } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import { useUserStore } from "@/store/modules/userStore";
 import { initRouter } from "@/router/utils";
+import { useDarkMode } from "@/hooks/useDarkMode";
 interface RuleForm {
   username: string;
   password: string;
 }
+const { isDark, toggle } = useDarkMode();
+
 const router = useRouter();
 const ruleFormRef = ref<FormInstance>();
 const ruleForm = reactive<RuleForm>({
@@ -64,4 +74,4 @@ const onSubmit = async (ruleFormRef: FormInstance | undefined) => {
     });
 };
 </script>
-@/api/user/user
+<style lang="sass" scoped></style>

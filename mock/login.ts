@@ -1,4 +1,12 @@
 const createUserList = () => {
+  // 获取当前时间戳（毫秒）
+  const currentTimestamp = Date.now();
+
+  // 2 分钟的毫秒数
+  const twoMinutesInMilliseconds = 6 * 60 * 1000;
+
+  // 计算当前时间戳加 2 分钟后的时间戳
+  const futureTimestamp = currentTimestamp + twoMinutesInMilliseconds;
   return [
     {
       userId: 1,
@@ -10,7 +18,7 @@ const createUserList = () => {
       routes: ["home"],
       accessToken: "eyJhbGciOiJIUzUxMiJ9.admin",
       refreshToken: "eyJhbGciOiJIUzUxMiJ9.adminRefresh",
-      expires: "2030/10/30 00:00:00",
+      expires: futureTimestamp,
     },
     {
       userId: 2,
@@ -22,7 +30,7 @@ const createUserList = () => {
       routes: ["home"],
       accessToken: "eyJhbGciOiJIUzUxMiJ9.system",
       refreshToken: "eyJhbGciOiJIUzUxMiJ9.systemRefresh",
-      expires: "2030/10/30 00:00:00",
+      expires: futureTimestamp,
     },
   ];
 };

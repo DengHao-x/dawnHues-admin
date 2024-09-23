@@ -1,0 +1,14 @@
+:root {
+  --el-color-primary: #0075ff;
+}
+
+html.light {
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+
+  /* 自定义深色背景颜色 */
+  --el-bg-color: #4966df;
+}

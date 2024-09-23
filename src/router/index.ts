@@ -1,7 +1,7 @@
 import { type Router, createRouter, type RouteRecordRaw, type RouteComponent, createWebHashHistory } from "vue-router";
 import NProgress from "@/utils/nprogress";
 import baseRoutes from "./modules/baseRouter";
-import { getToken } from "@/utils/authentication";
+import { getToken, removeToken } from "@/utils/authentication";
 import { initRouter } from "@/router/utils";
 /** 路由白名单 */
 const whiteList = ["/login"];
@@ -29,6 +29,7 @@ router.beforeEach((to, from, next) => {
       if (whiteList.indexOf(to.path) !== -1) {
         next();
       } else {
+        removeToken();
         next({ path: "/login" });
       }
     } else {

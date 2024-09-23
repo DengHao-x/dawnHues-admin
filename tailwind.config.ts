@@ -18,6 +18,11 @@ export default {
         text_color_primary: "var(--el-text-color-primary)",
         text_color_regular: "var(--el-text-color-regular)",
       },
+      backgroundColor: {
+        primary: "var(--el-bg-color)",
+        secondary: "var(--bg-secondary)",
+        danger: "var(--bg-danger)",
+      },
     },
   },
 } satisfies Config;

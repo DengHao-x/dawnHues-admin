@@ -1,9 +1,11 @@
 import { createApp } from "vue";
 import "./styles/reset.scss";
+
 import ElementPlus from "element-plus";
 // 注册element-plus图标
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import "element-plus/dist/index.css";
+import "./styles/element/index.scss";
 import App from "./App.vue";
 import router from "./router";
 import { initializationStore } from "@/store";
