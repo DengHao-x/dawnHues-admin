@@ -18,7 +18,7 @@ export function getToken() {
  * @param token
  */
 export function setToken(accessToken: string, expires: number) {
-  Cookies.set(TOKEYKEY, accessToken, { expires: (expires - Date.now()) / 86400000 });
+  Cookies.set(TOKEYKEY, accessToken, { expires: (expires - Date.now()) / 36400000 });
 }
 /**
  * @description 移除掉token
@@ -32,7 +32,8 @@ export function removeToken() {
 
 //本地获取用户信息
 export function getUserInfo() {
-  return localStorage.getItem(USERINFOKEY);
+  const userInfo = localStorage.getItem(USERINFOKEY);
+  return userInfo ? JSON.parse(userInfo) : null;
 }
 /**
  * @description 设置用户信息

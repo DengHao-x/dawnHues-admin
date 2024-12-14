@@ -4,22 +4,113 @@
  * admin：系统管理员角色
  * common-role：普通角色
  */
-
 const systemManagementRouter = {
   path: "/system",
+  name: "system",
   meta: {
-    title: "系统管理",
+    title: "menu.dawnSystemName",
     icon: "ep:lollipop",
     rank: 10,
   },
   children: [
     {
-      path: "/system/index",
-      name: "system",
+      path: "/system/user/index",
+      name: "systemUser",
       meta: {
-        title: "用户管理",
+        title: "menu.dawnSystemUser",
+        roles: ["admin", "common-role"],
+        buttons: ["permission:btn:add", "permission:btn:edit", "permission:btn:delete"],
+      },
+    },
+    {
+      path: "/system/menu/index",
+      name: "systemMenu",
+      meta: {
+        title: "menu.dawnSystemRolo",
         roles: ["admin", "common-role"],
       },
+    },
+  ],
+};
+const permissionRouter = {
+  path: "/permission",
+  name: "permission",
+  meta: {
+    title: "menu.dawnPermission",
+    icon: "ep:lock",
+    rank: 4,
+  },
+  children: [
+    {
+      path: "/permission/role/index",
+      name: "permissionRole",
+      meta: {
+        title: "menu.dawnSystemRolo",
+        roles: ["admin", "common-role"],
+      },
+    },
+  ],
+};
+const iframeRouter = {
+  path: "/iframe",
+  meta: {
+    icon: "ri:links-fill",
+    title: "menu.dawnOutsideChain",
+    rank: 13,
+  },
+  children: [
+    {
+      path: "/iframe/embedded",
+      meta: {
+        title: "menu.dawnOutsideChain",
+      },
+      children: [
+        {
+          path: "/iframe/vue-router",
+          name: "iframeVueRouter",
+          meta: {
+            title: "menu.dawnOutsideChain",
+            iframeSrc: "https://router.vuejs.org/",
+            keepAlive: true,
+            roles: ["admin", "common"],
+          },
+        },
+        {
+          path: "/iframe/doubao",
+          name: "iframeDuo",
+          meta: {
+            title: "menu.dawnOutsideChain",
+            iframeSrc: "https://www.doubao.com/chat/167515326344450",
+            keepAlive: true,
+            roles: ["admin", "common"],
+          },
+        },
+      ],
+    },
+    {
+      path: "/iframe/external",
+      meta: {
+        title: "menu.dawnOutsideChain",
+        name: "iframeExternal",
+      },
+      children: [
+        {
+          path: "/external",
+          name: "https://pure-admin.github.io/pure-admin-doc",
+          meta: {
+            title: "menu.dawnOutsideChain",
+            roles: ["admin", "common"],
+          },
+        },
+        {
+          path: "/pureUtilsLink",
+          name: "https://pure-admin-utils.netlify.app/",
+          meta: {
+            title: "menu.dawnOutsideChain",
+            roles: ["admin", "common"],
+          },
+        },
+      ],
     },
   ],
 };
@@ -32,7 +123,7 @@ export default [
       // 有就返回成功信息
       return {
         code: 200,
-        data: [{ ...systemManagementRouter }],
+        data: [systemManagementRouter, permissionRouter, iframeRouter],
       };
     },
   },

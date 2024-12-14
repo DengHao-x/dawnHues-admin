@@ -2,10 +2,14 @@ import { type Router, createRouter, type RouteRecordRaw, type RouteComponent, cr
 import NProgress from "@/utils/nprogress";
 import baseRoutes from "./modules/baseRouter";
 import { getToken, removeToken } from "@/utils/authentication";
-import { initRouter } from "@/router/utils";
+import { initRouter, sortRoutesByRank } from "@/router/utils";
 /** 路由白名单 */
 const whiteList = ["/login"];
 
+export const contMenu = () => {
+  //   sortRoutesByRank(baseRoutes);
+  return baseRoutes;
+};
 /** 创建路由实例 */
 export const router: Router = createRouter({
   history: createWebHashHistory(),

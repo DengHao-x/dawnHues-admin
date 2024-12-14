@@ -17,6 +17,8 @@ declare global {
     isHide?: boolean;
     //路由组件缓存
     isKeepAlive?: boolean;
+    // 内嵌iframe外链地址
+    iframeSrc?: string;
     // 菜单路由排序
     rank?: number;
     //页面权限

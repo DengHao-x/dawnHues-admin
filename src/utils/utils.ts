@@ -12,3 +12,13 @@ import { cloneDeep } from "lodash";
 export function deepClone<T>(value: T): T {
   return cloneDeep(value);
 }
+
+/**
+ * 判断是否为网页链接
+ * @param url 传入的参数
+ * @returns 返回是否为链接 true/false
+ */
+export function isLink(url: string): boolean {
+  const pattern = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
+  return pattern.test(url);
+}

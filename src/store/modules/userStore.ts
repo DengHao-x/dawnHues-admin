@@ -1,7 +1,8 @@
 import { defineStore } from "pinia";
-import { userType } from "./types";
+import { userType } from "../types";
 import { login } from "@/api/user/user";
-import { setToken, setUserInfo, removeToken } from "@/utils/authentication";
+import { setToken, setUserInfo, getUserInfo, removeToken } from "@/utils/authentication";
+
 export const useUserStore = defineStore({
   id: "dawnuserStore",
   state: (): userType => ({
@@ -11,6 +12,7 @@ export const useUserStore = defineStore({
     username: "",
     //角色页面权限
     roles: [],
+    bottons: [],
     //token
     accessToken: "",
     //刷新token
@@ -25,6 +27,7 @@ export const useUserStore = defineStore({
     set_avatar(avatar: string) {
       this.avatar = avatar;
     },
+    // 存储角色
     set_roles(roles: string[]) {
       this.roles = roles;
     },
@@ -34,8 +37,10 @@ export const useUserStore = defineStore({
         login(data)
           .then((res: any) => {
             if (res.data.success) {
-              const { accessToken, expires } = res.data.data;
+              const { password, accessToken, expires, ...result } = res.data.data;
               setToken(accessToken, expires);
+              setUserInfo(result);
+              this.set_roles(result.roles);
             }
             resolve(res.data);
           })

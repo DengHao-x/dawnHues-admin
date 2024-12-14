@@ -6,16 +6,21 @@ import ElementPlus from "element-plus";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import "element-plus/dist/index.css";
 import "./styles/element/index.scss";
+import "./styles/twilwindcss.css";
 import App from "./App.vue";
+import { i18n } from "./plugins/i18n";
 import router from "./router";
 import { initializationStore } from "@/store";
 
 const app = createApp(App);
+
 app.use(router);
+app.use(i18n);
 app.use(ElementPlus);
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component);
 }
 //初始化状态管理
 initializationStore(app);
+
 app.mount("#app");
