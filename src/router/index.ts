@@ -14,15 +14,14 @@ export const contMenu = () => {
 export const router: Router = createRouter({
   history: createWebHashHistory(),
   routes: baseRoutes as RouteRecordRaw[],
-  strict: true,
   scrollBehavior: () => ({ left: 0, top: 0 }),
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   NProgress.start();
   console.log(to, from, getToken(), "getToken()");
   if (getToken()) {
-    initRouter().then(() => {});
+    await initRouter().then(() => {});
     if (to.path === "/") {
       next("/home");
     } else {

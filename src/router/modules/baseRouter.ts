@@ -3,7 +3,7 @@ import { $t } from "@/plugins/i18n";
 const baseRoutes = [
   {
     path: "/",
-    redirect: "/workbench/home",
+    redirect: "/home",
     component: layout,
     meta: {
       title: $t("menu.home"),
