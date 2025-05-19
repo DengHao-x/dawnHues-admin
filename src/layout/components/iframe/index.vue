@@ -35,6 +35,8 @@ onMounted(() => {
 </script>
 <style scoped lang="scss">
 .iframe {
+  width: 100%;
+  height: 100%;
   .iframe-iframe {
     box-sizing: border-box;
     width: 100%;

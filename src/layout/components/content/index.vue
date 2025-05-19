@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="app-main">
     <router-view>
       <template #default="{ Component, route }">
         <component :is="Component" :iframeInfo="route" />
@@ -43,4 +43,11 @@ defineExpose({
   ...toRefs(data),
 });
 </script>
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.app-main {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow-x: hidden;
+}
+</style>

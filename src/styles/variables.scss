@@ -1,0 +1,16 @@
+/** 全局SCSS变量 */
+:root {
+  --sidebar-logo-background: #f5f5f5; // 侧边栏 Logo 背景色
+  --sidebar-logo-text-color: #333; // 侧边栏 Logo 文字颜色
+}
+
+html.light {
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+
+  /* 自定义深色背景颜色 */
+  --el-bg-color: #4966df;
+}

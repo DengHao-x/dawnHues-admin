@@ -1,7 +1,10 @@
 <template>
-  <el-menu ref="menuRef" router :default-active="defaultActive">
-    <SideMenuItem v-for="route in menuData" :key="route.path" :menuItem="route"></SideMenuItem>
-  </el-menu>
+  <div>
+    <sildebarLogo v-bind:collapse="false"></sildebarLogo>
+    <el-menu ref="menuRef" router :default-active="defaultActive">
+      <SideMenuItem v-for="route in menuData" :key="route.path" :menuItem="route"></SideMenuItem>
+    </el-menu>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -10,7 +13,7 @@ import { usePermissionStore } from "@/store/modules/permission";
 import { useRoute, useRouter } from "vue-router";
 import SideMenuItem from "./components/SideMenuItem.vue";
 import { useTransformLang } from "@/hooks/useTransformLang";
-
+import sildebarLogo from "./components/SidebarLogo.vue";
 const menuRef = ref();
 const { locale } = useTransformLang(menuRef);
 

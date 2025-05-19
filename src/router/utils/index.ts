@@ -16,6 +16,12 @@ export const initRouter = async () => {
 };
 
 /**
+ * 获取所有菜单中的第一个顶级菜单
+ * @param {Boolean} isOpen 是否
+ * @returns {Array<RouteRecordRaw>} 扁平化后的路由
+ */
+const getTopMenu = (isOpen: boolean) => {};
+/**
  * 扁平化嵌套的路由数组
  * @param {RouteRecordRaw} nestedRoutes 嵌套的多级路由
  * @returns {Array<RouteRecordRaw>} 扁平化后的路由
