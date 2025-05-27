@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="h-[100%] border-r-[1px]">
     <sildebarLogo v-bind:collapse="false"></sildebarLogo>
     <el-menu ref="menuRef" router :default-active="defaultActive">
       <SideMenuItem v-for="route in menuData" :key="route.path" :menuItem="route"></SideMenuItem>

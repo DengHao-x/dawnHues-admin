@@ -4,13 +4,14 @@ import { type RouteRecordRaw } from "vue-router";
 import { usePermissionStore } from "@/store/modules/permission";
 import { getUserInfo } from "@/utils/authentication";
 import router from "../index";
+import { isProxy, toRaw } from "vue";
 import iframeView from "@/layout/components/iframe/index.vue";
 // 初始化路由
 export const initRouter = async () => {
   return new Promise((resolve) => {
     getAsyncRouter().then((res: any) => {
       handleAsyncRouter(deepClone(res.data.data));
-      resolve(res.data);
+      resolve(router);
     });
   });
 };
@@ -73,6 +74,28 @@ const sortRoutesByRank = (routes: any[]) => {
   // 调用排序函数
   sortByRank(routes);
   return routes;
+};
+/**
+ * 查找对应的路由信息
+ * @param path 当前路径
+ * @param  {Array<RouteRecordRaw>} routes 当前所有的路由
+ * @returns 找的的路由信息
+ */
+const findToPath = (path: string, routes: RouteRecordRaw[]) => {
+  let resPath = routes.find((item: { path: string }) => item.path == path);
+  if (resPath) {
+    return isProxy(resPath) ? toRaw(resPath) : resPath;
+  } else {
+    for (let i = 0; i < routes.length; i++) {
+      if (routes[i].children && Array.isArray(routes[i].children) && routes[i].children.length > 0) {
+        resPath = findToPath(path, routes[i].children);
+        if (resPath) {
+          return isProxy(resPath) ? toRaw(resPath) : resPath;
+        }
+      }
+    }
+    return null;
+  }
 };
 // 根据当前的用户权限标识过滤无权限的
 const filterAndBuildTree = (routes: any[]): any[] => {
@@ -159,4 +182,4 @@ const generateFrontEndRouter = (ayncRouterList: Array<RouteRecordRaw>) => {
   return ayncRouterList;
 };
 
-export { sortRoutesByRank, filterAndBuildTree };
+export { sortRoutesByRank, filterAndBuildTree, findToPath };

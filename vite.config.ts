@@ -4,6 +4,7 @@ import vue from "@vitejs/plugin-vue";
 import { resolve } from "path";
 
 import { viteMockServe } from "vite-plugin-mock";
+import { codeInspectorPlugin } from "code-inspector-plugin";
 const pathResolve = (dir: string): any => {
   return resolve(__dirname, ".", dir);
 };
@@ -18,6 +19,9 @@ export default defineConfig(({ command }) => {
       viteMockServe({
         mockPath: "./mock",
         enable: command === "serve",
+      }),
+      codeInspectorPlugin({
+        bundler: "vite",
       }),
     ],
     resolve: {
