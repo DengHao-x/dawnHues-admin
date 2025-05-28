@@ -6,14 +6,12 @@ import { initRouter, sortRoutesByRank, findToPath } from "@/router/utils";
 /** 路由白名单 */
 const whiteList = ["/login"];
 
-export const contMenu = () => {
-  //   sortRoutesByRank(baseRoutes);
-  return baseRoutes;
-};
+/** 本地静态路由（未做任何处理） */
+export const staticRoutingList = baseRoutes;
 /** 创建路由实例 */
 export const router: Router = createRouter({
   history: createWebHashHistory(),
-  routes: baseRoutes as RouteRecordRaw[],
+  routes: staticRoutingList as RouteRecordRaw[],
   scrollBehavior: () => ({ left: 0, top: 0 }),
 });
 

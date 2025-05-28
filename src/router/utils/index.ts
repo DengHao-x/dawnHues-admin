@@ -1,11 +1,13 @@
 import { getAsyncRouter } from "@/api/asyncRouter";
 import { deepClone } from "@/utils/utils";
-import { type RouteRecordRaw } from "vue-router";
+import { type RouteRecordRaw, type RouteComponent } from "vue-router";
 import { usePermissionStore } from "@/store/modules/permission";
 import { getUserInfo } from "@/utils/authentication";
+
 import router from "../index";
 import { isProxy, toRaw } from "vue";
 import iframeView from "@/layout/components/iframe/index.vue";
+
 // 初始化路由
 export const initRouter = async () => {
   return new Promise((resolve) => {
@@ -22,6 +24,21 @@ export const initRouter = async () => {
  * @returns {Array<RouteRecordRaw>} 扁平化后的路由
  */
 const getTopMenu = (isOpen: boolean) => {};
+
+/**
+ * 筛选出meta中showLink为false的菜单
+ * @param {Array<RouteComponent>} menus 是否
+ * @returns {Array<RouteRecordRaw>} 筛选后的菜单数组
+ */
+const filterMetaTree = (menus: RouteComponent[]) => {
+  const filterNewMenu = deepClone(menus).filter((item: any) => item.meta.showLink !== false);
+  filterNewMenu.forEach((menu: any) => {
+    if (menu.children) {
+      filterMetaTree(menu.children);
+    }
+  });
+  return filterNewMenu;
+};
 /**
  * 扁平化嵌套的路由数组
  * @param {RouteRecordRaw} nestedRoutes 嵌套的多级路由
@@ -101,6 +118,7 @@ const findToPath = (path: string, routes: RouteRecordRaw[]) => {
 const filterAndBuildTree = (routes: any[]): any[] => {
   const userInfo = getUserInfo();
   const userRoles = userInfo?.roles || [];
+  console.log(userInfo, userRoles);
   // 检查用户是否有权限访问该路由，如果没有 roles 限制，默认所有用户可访问
   const hasPermission = (route: any): boolean => {
     const routeRoles = route.meta?.roles;
@@ -125,17 +143,29 @@ const filterAndBuildTree = (routes: any[]): any[] => {
 };
 //处理后端传过来的动态路由
 const handleAsyncRouter = (ayncRouterList: any) => {
+  // 如果后端传入只有一个路由
+  if (ayncRouterList.length === 0) {
+    usePermissionStore().handleAllMenus(ayncRouterList);
+    return;
+  }
+  // 处理后端返回的动态路由成前端规范的路由
   const frontEndRouerList = generateFrontEndRouter(ayncRouterList);
-  flattenRoutes(frontEndRouerList).forEach((routeItem) => {
+  // 处理成一维数组
+  const flattenRoutesList = flattenRoutes(frontEndRouerList);
+  flattenRoutesList.forEach((routeItem) => {
+    console.log(router.options.routes[0].children, "v");
     const childrenOne = router.options.routes[0].children || [];
     if (childrenOne.findIndex((value) => value.path === routeItem.path) === -1) {
       childrenOne.push(routeItem);
       sortRoutesByRank(childrenOne);
       const flattenRouters: any = router.getRoutes().find((n) => n.path === "/");
       router.addRoute(flattenRouters);
+    } else {
+      return;
     }
   });
-  usePermissionStore().handleAllMenus(router.options.routes[0].children);
+  console.log(ayncRouterList, "ayncRouterList");
+  usePermissionStore().handleAllMenus(ayncRouterList);
 };
 /**
  * 处理后端传过来的动态路由，生成前端规范的路由
@@ -181,5 +211,10 @@ const generateFrontEndRouter = (ayncRouterList: Array<RouteRecordRaw>) => {
 
   return ayncRouterList;
 };
+/**
+ * 将多级嵌套路由处理成一维数组
+ * @param routesList 传入路由
+ * @returns 返回处理后的一维路由
+ */
 
-export { sortRoutesByRank, filterAndBuildTree, findToPath };
+export { sortRoutesByRank, filterAndBuildTree, findToPath, filterMetaTree };
