@@ -1,35 +1,28 @@
 import { type Router, createRouter, type RouteRecordRaw, type RouteComponent, createWebHashHistory } from "vue-router";
 import NProgress from "@/utils/nprogress";
-import baseRoutes from "./modules/baseRouter";
+import { baseRoutes, whiteListRouter } from "./modules/baseRouter";
 import { getToken, removeToken } from "@/utils/authentication";
-import { initRouter, sortRoutesByRank, findToPath } from "@/router/utils";
+import { initRouter, sortRoutesByRank, findToPath, formatTwoStageRoutes, formatFlatteningRoutes } from "@/router/utils";
+import { buildHierarchyTree } from "@/utils/handleTree";
 /** 路由白名单 */
 const whiteList = ["/login"];
 
 /** 本地静态路由（未做任何处理） */
-export const staticRoutingList = baseRoutes;
+export const staticRoutingList = formatTwoStageRoutes(formatFlatteningRoutes(buildHierarchyTree(baseRoutes)));
+
+/** 用于菜单渲染，未作处理 */
+export const staticMenus = baseRoutes;
 /** 创建路由实例 */
 export const router: Router = createRouter({
   history: createWebHashHistory(),
-  routes: staticRoutingList as RouteRecordRaw[],
+  routes: staticRoutingList.concat(...(whiteListRouter as RouteRecordRaw[])),
   scrollBehavior: () => ({ left: 0, top: 0 }),
 });
 
 router.beforeEach(async (to, from, next) => {
   NProgress.start();
-  console.log(to, from, getToken(), "getToken()");
   if (getToken()) {
-    await initRouter().then((router: any) => {
-      const route = findToPath(to.path, router.options.routes[0].children);
-      if (route && route.meta?.title) {
-        // router.push(to.fullPath);
-      }
-      console.log(to.path, "route29");
-      // router.push(to.fullPath);
-      // if (to.name) router.push(to.fullPath);
-
-      console.log(router, router.options.routes[0].children, "1122");
-    });
+    await initRouter().then((router: any) => {});
     if (to.path === "/") {
       next("/home");
     } else {

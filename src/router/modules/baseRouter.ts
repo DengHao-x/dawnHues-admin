@@ -6,8 +6,8 @@ const baseRoutes = [
     redirect: "/home",
     component: layout,
     meta: {
-      title: $t("menu.home"),
-      showLink: false,
+      title: $t("menu.dawnHome"),
+      showLink: true,
       rank: 0,
     },
     children: [
@@ -16,23 +16,14 @@ const baseRoutes = [
         name: "home",
         component: () => import("@/views/home/index.vue"),
         meta: {
-          title: "首页",
-          showLink: false,
+          title: $t("menu.dawnHome"),
+          showLink: true,
           rank: 1,
         },
       },
     ],
   },
-  {
-    path: "/login",
-    name: "Login",
-    component: () => import("@/views/login/index.vue"),
-    meta: {
-      title: "登录",
-      showLink: false,
-      rank: 101,
-    },
-  },
+
   {
     path: "/error",
     component: layout,
@@ -53,5 +44,16 @@ const baseRoutes = [
     ],
   },
 ];
-
-export default baseRoutes;
+const whiteListRouter = [
+  {
+    path: "/login",
+    name: "Login",
+    component: () => import("@/views/login/index.vue"),
+    meta: {
+      title: "登录",
+      showLink: false,
+      rank: 101,
+    },
+  },
+];
+export { baseRoutes, whiteListRouter };

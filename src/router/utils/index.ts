@@ -7,6 +7,7 @@ import { getUserInfo } from "@/utils/authentication";
 import router from "../index";
 import { isProxy, toRaw } from "vue";
 import iframeView from "@/layout/components/iframe/index.vue";
+import { buildHierarchyTree } from "@/utils/handleTree";
 
 // 初始化路由
 export const initRouter = async () => {
@@ -98,14 +99,15 @@ const sortRoutesByRank = (routes: any[]) => {
  * @param  {Array<RouteRecordRaw>} routes 当前所有的路由
  * @returns 找的的路由信息
  */
-const findToPath = (path: string, routes: RouteRecordRaw[]) => {
+const findToPath = (path: string, routes: RouteRecordRaw[]): RouteRecordRaw | null => {
   let resPath = routes.find((item: { path: string }) => item.path == path);
   if (resPath) {
     return isProxy(resPath) ? toRaw(resPath) : resPath;
   } else {
     for (let i = 0; i < routes.length; i++) {
-      if (routes[i].children && Array.isArray(routes[i].children) && routes[i].children.length > 0) {
-        resPath = findToPath(path, routes[i].children);
+      if (routes[i]?.children && Array.isArray(routes[i].children) && routes[i].children.length > 0) {
+        const children = routes[i].children as RouteRecordRaw[];
+        resPath = findToPath(path, children);
         if (resPath) {
           return isProxy(resPath) ? toRaw(resPath) : resPath;
         }
@@ -138,8 +140,8 @@ const filterAndBuildTree = (routes: any[]): any[] => {
         return children.length ? { ...route, children } : route;
       });
   };
-
-  return buildTree(filteredRoutes, null);
+  console.log(filteredRoutes, "filteredRoutes", buildTree(filteredRoutes, null));
+  return filteredRoutes;
 };
 //处理后端传过来的动态路由
 const handleAsyncRouter = (ayncRouterList: any) => {
@@ -153,7 +155,6 @@ const handleAsyncRouter = (ayncRouterList: any) => {
   // 处理成一维数组
   const flattenRoutesList = flattenRoutes(frontEndRouerList);
   flattenRoutesList.forEach((routeItem) => {
-    console.log(router.options.routes[0].children, "v");
     const childrenOne = router.options.routes[0].children || [];
     if (childrenOne.findIndex((value) => value.path === routeItem.path) === -1) {
       childrenOne.push(routeItem);
@@ -164,7 +165,7 @@ const handleAsyncRouter = (ayncRouterList: any) => {
       return;
     }
   });
-  console.log(ayncRouterList, "ayncRouterList");
+
   usePermissionStore().handleAllMenus(ayncRouterList);
 };
 /**
@@ -212,9 +213,52 @@ const generateFrontEndRouter = (ayncRouterList: Array<RouteRecordRaw>) => {
   return ayncRouterList;
 };
 /**
+ * 将一维数组处理成多级嵌套数组，三级及以上路由全部组成二级，keep-alive值只支持二级缓存
+ * @param routesList 传入路由
+ * @returns 处理成规定路由的格式
+ */
+const formatTwoStageRoutes = (routesList: RouteRecordRaw[]) => {
+  if (routesList.length === 0) return routesList;
+  const newRoutesList: RouteRecordRaw[] = [];
+  routesList.forEach((v: RouteRecordRaw) => {
+    if (v.path === "/") {
+      newRoutesList.push({
+        component: v.component,
+        name: v.name,
+        path: v.path,
+        redirect: v.redirect,
+        meta: v.meta,
+        children: [],
+      });
+    } else {
+      // 检查 newRoutesList[0] 是否存在
+      if (newRoutesList.length > 0 && newRoutesList[0]) {
+        newRoutesList[0].children.push({ ...v });
+      }
+    }
+  });
+  return newRoutesList;
+};
+/**
  * 将多级嵌套路由处理成一维数组
  * @param routesList 传入路由
  * @returns 返回处理后的一维路由
  */
-
-export { sortRoutesByRank, filterAndBuildTree, findToPath, filterMetaTree };
+function formatFlatteningRoutes(routesList: RouteRecordRaw[]) {
+  if (routesList.length === 0) return routesList;
+  let hierarchyList = buildHierarchyTree(routesList);
+  for (let i = 0; i < hierarchyList.length; i++) {
+    if (hierarchyList[i].children) {
+      hierarchyList = hierarchyList.slice(0, i + 1).concat(hierarchyList[i].children, hierarchyList.slice(i + 1));
+    }
+  }
+  return hierarchyList;
+}
+export {
+  sortRoutesByRank,
+  filterAndBuildTree,
+  findToPath,
+  filterMetaTree,
+  formatFlatteningRoutes,
+  formatTwoStageRoutes,
+};
